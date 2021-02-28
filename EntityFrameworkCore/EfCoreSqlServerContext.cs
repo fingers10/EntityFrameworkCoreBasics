@@ -8,6 +8,8 @@ namespace EntityFrameworkCore
     {
         public DbSet<CategoryEntity> Categories { get; set; }
 
+        public DbSet<AnotherCategoryEntity> AnotherCategories { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer("Server=.\\;Database=EFCoreDB;Trusted_Connection=true;")
@@ -31,6 +33,11 @@ namespace EntityFrameworkCore
                       .HasMaxLength(50)
                       .HasColumnName("Description");
                 entity.Ignore(x => x.Status);
+            });
+
+            modelBuilder.Entity<AnotherCategoryEntity>(entity =>
+            {
+                entity.HasNoKey();
             });
         }
     }

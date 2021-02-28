@@ -9,6 +9,12 @@
         public bool Active { get; set; }
     }
 
+    public class AnotherCategoryEntity
+    {
+        public string Name { get; set; }
+        public string Description { get; set; }
+    }
+
     public enum Status
     {
         Active,

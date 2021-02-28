@@ -21,7 +21,7 @@ namespace EntityFrameworkCore
             // Read
             var categories = await ctx.Categories.TagWith("Category Name Starting With A").Where(x => x.Name.StartsWith("A")).ToListAsync();
 
-            var category = await ctx.Categories.FindAsync(1);
+            var category = await ctx.Categories.FindAsync(categories.First().Id);
 
             category.Desc = "Apple Products";
 
@@ -34,6 +34,15 @@ namespace EntityFrameworkCore
             ctx.Categories.Remove(category);
 
             await ctx.SaveChangesAsync();
+
+            var categoryName = "Apple";
+            var spCategories = await ctx.AnotherCategories.FromSqlInterpolated($"EXEC [dbo].[GetCategories] @Name={categoryName}").ToListAsync();
+
+            // EF Functions
+            // https://docs.microsoft.com/en-us/ef/core/providers/sql-server/functions
+
+            //var functionCategories = await ctx.Categories.Where(p => EF.Functions.Like(p.Name, "A%")).ToListAsync();
+            var functionCategories = await ctx.Categories.Where(p => p.Name.FirstOrDefault() == 'A').ToListAsync();
 
             Console.ReadKey();
         }

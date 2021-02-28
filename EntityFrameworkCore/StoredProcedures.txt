@@ -1,0 +1,10 @@
+﻿CREATE PROCEDURE [dbo].[GetCategories]
+                @Name varchar(200)
+            AS
+            BEGIN
+                SET NOCOUNT ON;
+                SELECT * FROM Categories
+                WHERE [Name] = @Name
+            END
+
+DROP PROCEDURE [dbo].[GetCategories]
