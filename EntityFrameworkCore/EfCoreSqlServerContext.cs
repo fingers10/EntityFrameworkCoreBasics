@@ -6,13 +6,21 @@ namespace EntityFrameworkCore
 {
     public class EfCoreSqlServerContext : DbContext
     {
+        private readonly string _connectionString;
+
+        public EfCoreSqlServerContext(ConnectionString connectionString)
+        {
+            _connectionString = connectionString?.Value ?? throw new ArgumentNullException(nameof(connectionString));
+        }
+
         public DbSet<CategoryEntity> Categories { get; set; }
 
         public DbSet<AnotherCategoryEntity> AnotherCategories { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=.\\;Database=EFCoreDB;Trusted_Connection=true;")
+            //optionsBuilder.UseSqlServer("Server=.\\;Database=EFCoreDB;Trusted_Connection=true;")
+            optionsBuilder.UseSqlServer(_connectionString)
                           .LogTo(Console.WriteLine, new[] { DbLoggerCategory.Database.Command.Name }, LogLevel.Information)
                           .EnableDetailedErrors()
                           .EnableSensitiveDataLogging(false);
